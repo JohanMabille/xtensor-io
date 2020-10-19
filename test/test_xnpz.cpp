@@ -92,7 +92,7 @@ namespace xt
         return true;
     }
 
-    TEST(xnpz, save_uncompressed)
+    /*TEST(xnpz, save_uncompressed)
     {
         dump_npz("files/dump_uncompressed.npz", "arr_0", linspace<double>(0, 100), false, false);
         xt::xarray<int64_t> arr = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}};
@@ -106,5 +106,55 @@ namespace xt
         dump_npz("files/dump_compressed.npz", "arr_1", linspace<double>(0, 100), true, false );
         dump_npz("files/dump_compressed.npz", "arr_0", arr, true);
         EXPECT_TRUE(compare_binary_files("files/dump_compressed.npz", "files/compressed.npz", 2));
+    }*/
+
+    namespace test
+    {
+        void dump_hex_buf(const std::string& file_name,
+                          const std::vector<uint8_t>& buf)
+        {
+            std::ofstream out(file_name.c_str());
+            out << std::hex;
+            int i = 0;
+            for (auto c : buf)
+            {
+                out << uint32_t(c) << ' ';
+                if (i++%32 == 0)
+                {
+                    out << std::endl;
+                }
+            }
+        }
+    }
+    TEST(xnpz, exploring)
+    {
+        /*std::string fn1 = "files/new_numpy.npz";
+        std::string fn2 = "files/dump_uncompressed.npz";
+
+        std::ifstream stream1(fn1, std::ios::in | std::ios::binary);
+        std::vector<uint8_t> fn1_contents((std::istreambuf_iterator<char>(stream1)),
+                                           std::istreambuf_iterator<char>());
+
+        std::ofstream out1("new_numpy.txt");
+        std::copy(fn1_contents.cbegin(), fn1_contents.cend(), std::ostreambuf_iterator<char>(out1));
+
+        test::dump_hex_buf("new_numpy_int.txt", fn1_contents);
+
+
+        std::ifstream stream2(fn2, std::ios::in | std::ios::binary);
+        std::vector<uint8_t> fn2_contents((std::istreambuf_iterator<char>(stream2)),
+                                           std::istreambuf_iterator<char>());
+
+        std::ofstream out2("dump_uncompressed.txt");
+        std::copy(fn2_contents.cbegin(), fn2_contents.cend(), std::ostreambuf_iterator<char>(out2));
+
+        test::dump_hex_buf("dump_uncompressed_int.txt", fn2_contents);*/
+
+        auto npz_map = xt::load_npz("files/new_numpy.npz");
+        auto arr_0 = npz_map["arr_0"].cast<double>();
+        auto arr_1 = npz_map["arr_1"].cast<uint64_t>(false);
+        xt::xarray<uint64_t> xarr_1 = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}};
+        EXPECT_TRUE(xt::all(xt::isclose(arr_0, linspace<double>(0, 100))));
+        EXPECT_TRUE(xt::all(xt::equal(arr_1, xarr_1)));
     }
 }

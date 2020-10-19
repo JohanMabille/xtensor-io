@@ -75,15 +75,15 @@ find_package(Threads)
 
 set(XTENSOR_IO_TESTS
     main.cpp
-    test_xgdal.cpp
+    #test_xgdal.cpp
     test_xnpz.cpp
-    test_xhighfive.cpp
-    test_ximage.cpp
-    test_xaudio.cpp
-    test_xio_blosc.cpp
-    test_xio_gzip.cpp
-    test_xio_binary.cpp
-    test_xio_gcs_handler.cpp
+    #test_xhighfive.cpp
+    #test_ximage.cpp
+    #test_xaudio.cpp
+    #test_xio_blosc.cpp
+    #test_xio_gzip.cpp
+    #test_xio_binary.cpp
+    #test_xio_gcs_handler.cpp
 )
 
 set(XTENSOR_IO_HO_TESTS
